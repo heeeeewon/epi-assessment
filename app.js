@@ -1,5 +1,6 @@
 const CONFIG = {
-  googleScriptUrl: "",
+  // Google Apps Script Web App URL을 여기에 넣으세요. 예: https://script.google.com/macros/s/배포_ID/exec
+  googleScriptUrl: "https://script.google.com/macros/s/AKfycbxl04K2YlRLW_xdLZ0hSp4L2zS6owal0dArIhX4bCG6iRDSsYumGT9jFIC0-H62v915/exec",
   courseName: "역학 및 건강증진",
   presentationDate: "2026-06-09"
 };
@@ -477,9 +478,8 @@ async function handleSubmit(event) {
   const endpoint = getEndpoint();
 
   if (!endpoint) {
-    downloadJson(payload);
-    refs.formStatus.textContent = "연결 설정이 없어 JSON 파일로 저장했습니다.";
-    showToast("JSON 파일로 저장했습니다.");
+    refs.formStatus.textContent = "Google Sheets 연결 URL이 설정되지 않았습니다.";
+    showToast("Google Sheets 연결 URL을 설정하세요.");
     return;
   }
 
