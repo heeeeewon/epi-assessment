@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>역학 및 건강증진 조별활동 평가</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-rail" aria-label="평가 진행 정보">
+        <div class="brand-block">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span>
+          </div>
+          <div>
+            <p class="course-label">역학 및 건강증진</p>
+            <p class="course-term">조별활동 평가</p>
+          </div>
+        </div>
+
+        <nav class="progress-nav" aria-label="설문 섹션">
+          <a href="#respondent-panel" class="progress-item is-active">
+            <span>1</span>
+            <strong>기본정보</strong>
+          </a>
+          <a href="#peer-panel" class="progress-item system-nav is-active" data-system="peer">
+            <span>2</span>
+            <strong>조원평가 시스템</strong>
+          </a>
+          <a href="#group-panel" class="progress-item system-nav" data-system="group">
+            <span>3</span>
+            <strong>조별평가 시스템</strong>
+          </a>
+        </nav>
+
+        <div class="side-card">
+          <p class="side-title">평가 기준</p>
+          <dl class="score-list">
+            <div>
+              <dt>조원평가</dt>
+              <dd><span id="peerProgress">0/0</span> 완료</dd>
+            </div>
+            <div>
+              <dt>조별평가</dt>
+              <dd><span id="groupProgress">0/0</span> 완료</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="side-card connection-card">
+          <p class="side-title">연결 상태</p>
+          <p id="connectionState" class="connection-state">로컬 저장 모드</p>
+        </div>
+      </aside>
+
+      <main class="page">
+        <header class="page-header">
+          <div>
+            <p class="header-note">2026.06.09 발표 평가</p>
+            <h1>역학 및 건강증진 조별활동 평가</h1>
+          </div>
+          <div class="header-actions">
+            <button type="button" class="icon-button" id="previewButton" aria-label="제출 데이터 미리보기" title="제출 데이터 미리보기">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 5h16M4 12h16M4 19h10" />
+              </svg>
+            </button>
+            <button type="button" class="secondary-button" id="saveDraftButton">임시저장</button>
+          </div>
+        </header>
+
+        <form id="evaluationForm" novalidate>
+          <section class="panel" id="respondent-panel">
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">Step 1</p>
+                <h2>기본정보</h2>
+              </div>
+              <span class="score-pill">필수</span>
+            </div>
+
+          <div class="field-grid">
+              <label class="field">
+                <span>본인 조</span>
+                <select id="ownGroup" name="ownGroup" required>
+                  <option value="">선택</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>이름</span>
+                <select id="evaluatorMember" name="evaluatorMember" required disabled>
+                  <option value="">본인 조를 먼저 선택하세요</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>학번</span>
+                <input id="studentId" name="studentId" type="text" inputmode="numeric" autocomplete="off" />
+              </label>
+            </div>
+          </section>
+
+          <section class="system-selector" aria-label="평가 시스템 선택">
+            <button type="button" class="system-card is-active" data-system="peer">
+              <span>01</span>
+              <strong>조원평가 시스템</strong>
+              <em>본인 조 안에서 조원별 개인 기여도 5개 항목을 평가합니다.</em>
+            </button>
+            <button type="button" class="system-card" data-system="group">
+              <span>02</span>
+              <strong>조별평가 시스템</strong>
+              <em>다른 조 발표를 주제, 근거, PRECEDE, 전략 중심으로 평가합니다.</em>
+            </button>
+          </section>
+
+          <section class="panel system-panel is-active" id="peer-panel" data-system-panel="peer">
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">조원평가 시스템</p>
+                <h2>개인 기여도 평가</h2>
+                <p class="scale-note">1점: 매우 낮음 · 5점: 매우 높음</p>
+              </div>
+              <span class="score-pill">각 25점</span>
+            </div>
+            <div id="peerCards" class="evaluation-grid"></div>
+          </section>
+
+          <section class="panel system-panel" id="group-panel" data-system-panel="group" hidden>
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">조별평가 시스템</p>
+                <h2>다른 조 발표 평가</h2>
+              </div>
+              <span class="score-pill">각 30점</span>
+            </div>
+            <div id="groupCards" class="evaluation-grid"></div>
+          </section>
+
+          <section class="submit-panel" aria-label="제출">
+            <p id="formStatus" class="form-status visually-hidden" aria-live="polite">조원평가 시스템이 선택되었습니다.</p>
+            <div class="submit-actions">
+              <button type="submit" class="primary-button" id="submitButton">조원평가 제출</button>
+            </div>
+          </section>
+        </form>
+      </main>
+    </div>
+
+    <dialog id="payloadDialog" class="payload-dialog">
+      <form method="dialog">
+        <div class="dialog-header">
+          <h2>제출 데이터</h2>
+          <button type="submit" class="icon-button" aria-label="닫기" title="닫기">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+        <pre id="payloadPreview"></pre>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js"></script>
+  </body>
+</html>
